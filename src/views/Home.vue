@@ -1,14 +1,14 @@
 <template>
-  <weather />
+  <upcoming />
 </template>
 
 <script>
   import HomeHero from '../components/HomeHero'
-  import Weather from '../components/Live'
+  import Upcoming from '../components/Upcoming'
   export default {
     components: {
       HomeHero,
-      Weather
+      Upcoming
     }
   }
 </script>

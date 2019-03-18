@@ -33,7 +33,7 @@ export default {
     name: 'AppNavigation',
     data() {
         return {
-            appTitle: 'Xtrotech SDN BHD',
+            appTitle: 'TITLE HERE',
             drawer: false,
             items: [
                 { title: 'About Us' },

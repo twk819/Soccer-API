@@ -1,30 +1,43 @@
 
 <template>
     <v-container fluid fill-height>
-        <v-list>
+        <v-list fluid>
             <v-list-group
-              v-for="item in items"
+              v-for="(item, index) in items"
               :key="item.idEvent"
               no-action
             >
-              <template v-slot:activator>
-                <v-list-tile>
-                  <v-list-tile-content>
-                    <v-list-tile-title>{{ item.strEvent }}</v-list-tile-title>
-                    <v-list-tile-sub-title v-if="" >Notify when receiving invites</v-list-tile-sub-title>
-                  </v-list-tile-content>
-                </v-list-tile>
-              </template>
+				<template v-slot:activator>
+					<v-list-tile>
+						<v-list-tile-content>
+						<v-list-tile-title>
+							<v-layout row wrap >
+							<v-flex xs5 text-xs-left>
+								{{ item.strHomeTeam }}
+							</v-flex>
+							<v-flex xs2 text-xs-center>
+								-
+							</v-flex>
+							<v-flex xs5 text-xs-right>
+								{{ item.strAwayTeam }}
+							</v-flex>
+							</v-layout>
+
+						</v-list-tile-title>
+						<v-list-tile-sub-title >Notify when receiving invites</v-list-tile-sub-title>
+						</v-list-tile-content>
+					</v-list-tile>
+				</template>
 
               <v-list-tile
 
               >
                 <v-list-tile-content>
-                  <v-list-tile-title>{{  }}</v-list-tile-title>
+                  <v-list-tile-title>{{ getRecentForm(item.idHomeTeam, index, 'H') }}</v-list-tile-title>
                 </v-list-tile-content>
   
                 <v-list-tile-action>
-                  <v-icon>{{  }}</v-icon>
+                  <v-icon>{{ getRecentForm(item.idHomeTeam, index, 'A') }}</v-icon>
                 </v-list-tile-action>
               </v-list-tile>
 
@@ -50,8 +63,11 @@ export default {
         }
     },
     created: function() {
-        this.getLive();
-    },
+        this.getUpcoming();
+	},
+	computed: {
+
+	},
     methods: {
         fetchData: function(api) {
              fetch(api)
@@ -69,7 +85,7 @@ export default {
                 })
                 .catch(err => console.log(err))
         },
-        getLive: function() {
+        getUpcoming: function() {
             var _this = this;
             
             let eventApi = apiURL + 'eventsnextleague.php?id=4328'; 
@@ -79,33 +95,41 @@ export default {
                 .then(response => response.json())
                 .then(data => {
                     for (let key in data.events) {
-                        res.push(data.events[key]);
+						if(key < 6)
+                        	res.push(data.events[key]);
                     }
                     this.items = res;
                     league = data.events[0].strLeague;
-                    console.log(this.items);
+                    //console.log(this.items);
                 })
                 .catch(err => console.log(err))
-
-            let matchApi = apiURL + 'latestsoccer.php'; 
-
+		},
+		getRecentForm: function(id, index, ind) {
+			// Get Last 5 event result of a team
+			let matchApi = apiURL + 'eventslast.php?id=' + id; 
+			let result;
             //_this.fetchData(param);
             fetch(matchApi)
                 .then(response => response.json())
                 .then(data => {
-                    for (let key in data.teams.Match) {
-                        if(league == data.teams.Match[key].League) {
-                            //this.items.data.teams.Match[key]);
-                            console.log(data.teams.Match[key].HomeTeam);
-                        }
-                            
-                    }
-                    //this.matchs = score;
-                    //console.log(this.matchs);
+					let score = '';
+					for (var i in data.results) {
+						if (data.results[i].intHomeScore == data.results[i].intAwayScore)
+							score += 'D';
+						else
+							score += data.results[i].intHomeScore;
+						console.log(data.results[i].intHomeScore);
+						
+					}
+					result += score;
+					this.items[i].homeScore = result;
+					console.log("home: "+this.items[index].homeScore)
+					return result;
                 })
-                .catch(err => console.log(err))
-
-        }
+				.catch(err => console.log(err))
+			
+			return this.items[index].homeScorer
+		},
     }
 }
 </script>
