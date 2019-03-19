@@ -1,6 +1,6 @@
 <template>
     <v-app id="inspire">
-        <v-card>
+        <v-card class="pa-3">
         <v-text-field
           v-model="search"
           append-icon="search"
@@ -13,17 +13,18 @@
             :items="items"
             :search="search"
             hide-actions
+            disable-initial-sort
         >
             <template v-slot:items="props">
-            <td>{{ props.item.name }}</td>
-            <td class="text-xs-center">{{ props.item.played }}</td>
-            <td class="text-xs-center">{{ props.item.win }}</td>
-            <td class="text-xs-center">{{ props.item.draw }}</td>
-            <td class="text-xs-center">{{ props.item.loss }}</td>
-            <td class="text-xs-center">{{ props.item.goalsfor }}</td>
-            <td class="text-xs-center">{{ props.item.goalsagainst }}</td>
-            <td class="text-xs-center">{{ props.item.goalsdifference }}</td>
-            <td class="text-xs-center">{{ props.item.total }}</td>
+            <router-link  v-bind:to="'/club/' + props.item.name"><td>{{ props.item.name }}</td></router-link>
+            <td class="text-xs-left">{{ props.item.played }}</td>
+            <td class="text-xs-left">{{ props.item.win }}</td>
+            <td class="text-xs-left">{{ props.item.draw }}</td>
+            <td class="text-xs-left">{{ props.item.loss }}</td>
+            <td class="text-xs-left">{{ props.item.goalsfor }}</td>
+            <td class="text-xs-left">{{ props.item.goalsagainst }}</td>
+            <td class="text-xs-left">{{ props.item.goalsdifference }}</td>
+            <td class="text-xs-left">{{ props.item.total }}</td>
             </template>
             <v-alert v-slot:no-results :value="true" color="error" icon="warning">
             Your search for "{{ search }}" found no results.
@@ -71,6 +72,7 @@ export default {
             fetch(api)
                 .then(response => response.json())
                 .then(data => {
+                    res = [];
                     console.log(data.table);
                     for (let key in data.table) {
                         res.push(data.table[key]);
@@ -85,6 +87,10 @@ export default {
 
 <style>
 table.v-table thead td:not(:nth-child(1)), table.v-table tbody td:not(:nth-child(1)), table.v-table thead th:not(:nth-child(1)), table.v-table tbody th:not(:nth-child(1)), table.v-table thead td:first-child, table.v-table tbody td:first-child, table.v-table thead th:first-child, table.v-table tbody th:first-child {
-    padding: 0 6px;
+    padding: 0 1px;
 }
+
+/* th:first-child, td:first-child {
+    padding: 0 8px;
+} */
 </style>

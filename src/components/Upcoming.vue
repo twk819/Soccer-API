@@ -51,7 +51,6 @@
 let res = [];
 let score = [];
 let apiURL = 'https://www.thesportsdb.com/api/v1/json/1/';
-const apiKey = '&appid=81cccfad5f894f739e8cad2c31d31dab';
     
 export default {
     name: 'Weather',
@@ -94,6 +93,7 @@ export default {
             fetch(eventApi)
                 .then(response => response.json())
                 .then(data => {
+                    res = [];
                     for (let key in data.events) {
 						if(key < 6)
                         	res.push(data.events[key]);
@@ -118,12 +118,11 @@ export default {
 							score += 'D';
 						else
 							score += data.results[i].intHomeScore;
-						console.log(data.results[i].intHomeScore);
 						
 					}
 					result += score;
 					this.items[i].homeScore = result;
-					console.log("home: "+this.items[index].homeScore)
+					//console.log("home: "+this.items[index].homeScore)
 					return result;
                 })
 				.catch(err => console.log(err))

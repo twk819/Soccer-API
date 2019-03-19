@@ -20,15 +20,15 @@
             </router-link>
             <v-spacer class="hidden-sm-and-down"></v-spacer>
             <v-toolbar-items class="hidden-sm-and-down">
-                <v-btn flat to="/about">About Us</v-btn>
-                <v-btn flat to="/service">Our Services</v-btn>
-                <v-btn flat to="/contact">Contact Us</v-btn>
+                <v-btn flat to="/about">Standing</v-btn>
+                <v-btn flat to="/club">Clubs</v-btn>
             </v-toolbar-items>
         </v-toolbar>
     </span>
 </template>
 
 <script>
+
 export default {
     name: 'AppNavigation',
     data() {
